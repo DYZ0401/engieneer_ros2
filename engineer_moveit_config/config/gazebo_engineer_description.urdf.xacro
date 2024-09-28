@@ -1,0 +1,144 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="engineer_description">
+
+    <!-- Used for fixing robot to Gazebo 'base_link' 将机械手的基座固定在世界坐标上-->
+    <link name="world"/>
+    <joint name="fixed" type="fixed">
+        <parent link="world"/>
+        <child link="dummy"/>
+    </joint>
+
+    <!-- Import engineer_description urdf file -->
+    <xacro:include filename="$(find engineer_description)/urdf/engineer_description.urdf" />
+
+
+    <!-- 对一些link进行gazebo的属性设置 -->
+    <gazebo reference="uplift_Link">
+        <self_collide>false</self_collide>
+        <gravity>false</gravity>
+    </gazebo>
+    <gazebo reference="extend_Link">
+        <gravity>false</gravity>
+    </gazebo>
+    <gazebo reference="slide_Link">
+        <gravity>false</gravity>
+    </gazebo>
+    <gazebo reference="arm_yaw_Link">
+        <gravity>false</gravity>
+    </gazebo>
+    <gazebo reference="arm_pitch_Link">
+        <gravity>false</gravity>
+    </gazebo>
+    <gazebo reference="arm_roll_Link">
+        <gravity>false</gravity>
+    </gazebo>
+    <gazebo reference="pitch_Link">
+        <gravity>false</gravity>
+    </gazebo>
+    <gazebo reference="roll_Link">
+        <gravity>false</gravity>
+    </gazebo>
+
+    <!-- 设置不了静态，不知为啥 -->
+    <gazebo>
+        <is_static>true</is_static>
+        <self_collide>true</self_collide>
+    </gazebo>
+
+    <xacro:macro name="joint_transmission" params="joint_name">
+        <transmission name="${joint_name}_trans">
+            <type>transmission_interface/SimpleTransmission</type>
+            <joint name="${joint_name}">
+                <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+            </joint>
+            <actuator name="${joint_name}_motor">
+                <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+                <mechanicalReduction>1</mechanicalReduction>
+            </actuator>
+        </transmission>
+    </xacro:macro>
+    <xacro:joint_transmission joint_name="uplift_joint"/>
+    <xacro:joint_transmission joint_name="extend_joint"/>
+    <xacro:joint_transmission joint_name="slide_joint"/>
+    <xacro:joint_transmission joint_name="arm_yaw_joint"/>
+    <xacro:joint_transmission joint_name="arm_pitch_joint"/>
+    <xacro:joint_transmission joint_name="arm_roll_joint"/>
+    <xacro:joint_transmission joint_name="pitch_joint"/>
+    <xacro:joint_transmission joint_name="roll_joint"/>
+
+
+    <!-- 声明ros2_control -->
+    <ros2_control name="GazeboSystem" type="system">
+        <hardware>
+            <plugin>gazebo_ros2_control/GazeboSystem</plugin>
+        </hardware>
+        <joint name="uplift_joint">
+            <command_interface name="position"/>
+            <state_interface name="position">
+                <param name="initial_value">0</param>
+            </state_interface>
+            <state_interface name="velocity"/>
+        </joint>
+        <joint name="extend_joint">
+            <command_interface name="position"/>
+            <state_interface name="position">
+                <param name="initial_value">0</param>
+            </state_interface>
+            <state_interface name="velocity"/>
+        </joint>
+        <joint name="slide_joint">
+            <command_interface name="position"/>
+            <state_interface name="position">
+                <param name="initial_value">0</param>
+            </state_interface>
+            <state_interface name="velocity"/>
+        </joint>
+        <joint name="arm_yaw_joint">
+            <command_interface name="position"/>
+            <state_interface name="position">
+                <param name="initial_value">0</param>
+            </state_interface>
+            <state_interface name="velocity"/>
+        </joint>
+        <joint name="arm_pitch_joint">
+            <command_interface name="position"/>
+            <state_interface name="position">
+                <param name="initial_value">0</param>
+            </state_interface>
+            <state_interface name="velocity"/>
+        </joint>
+        <joint name="arm_roll_joint">
+            <command_interface name="position"/>
+            <state_interface name="position">
+                <param name="initial_value">0</param>
+            </state_interface>
+            <state_interface name="velocity"/>
+        </joint>
+        <joint name="pitch_joint">
+            <command_interface name="position"/>
+            <state_interface name="position">
+                <param name="initial_value">0</param>
+            </state_interface>
+            <state_interface name="velocity"/>
+        </joint>
+        <joint name="roll_joint">
+            <command_interface name="position"/>
+            <state_interface name="position">
+                <param name="initial_value">0</param>
+            </state_interface>
+            <state_interface name="velocity"/>
+        </joint>
+    </ros2_control>
+
+    <!-- 加载ros2_control插件 -->
+    <gazebo>
+        <plugin filename="libgazebo_ros2_control.so" name="gazebo_ros2_control">
+            <parameters>$(find engineer_moveit_config)/config/ros2_controllers.yaml</parameters>
+            <robot_param>robot_description</robot_param>
+            <robot_param_node>robot_state_publisher</robot_param_node>
+        </plugin>
+    </gazebo>
+
+
+</robot>
+
