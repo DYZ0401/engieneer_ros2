@@ -13,6 +13,10 @@
 
 
     <!-- 对一些link进行gazebo的属性设置 -->
+    <gazebo reference="base_link">
+        <self_collide>false</self_collide>
+        <gravity>false</gravity>
+    </gazebo>
     <gazebo reference="uplift_Link">
         <self_collide>false</self_collide>
         <gravity>false</gravity>
