@@ -58,7 +58,7 @@
         <parent link="base_link" />
         <child link="uplift_Link" />
         <axis xyz="0 0 1" />
-        <limit lower="0" upper="0.66" effort="100" velocity="1" />
+        <limit lower="0" upper="0.66" effort="100" velocity="1.000001" />
     </joint>
     <link name="extend_Link">
         <inertial>
@@ -87,7 +87,7 @@
         <parent link="uplift_Link" />
         <child link="extend_Link" />
         <axis xyz="0 0 -1" />
-        <limit lower="0" upper="0.66" effort="100" velocity="1" />
+        <limit lower="0" upper="0.66" effort="100" velocity="1.000001" />
     </joint>
     <link name="slide_Link">
         <inertial>
@@ -116,7 +116,7 @@
         <parent link="extend_Link" />
         <child link="slide_Link" />
         <axis xyz="0 0 1" />
-        <limit lower="0" upper="0.138" effort="100" velocity="1" />
+        <limit lower="0" upper="0.138" effort="100" velocity="1.000001" />
     </joint>
     <link name="arm_yaw_Link">
         <inertial>
@@ -145,7 +145,7 @@
         <parent link="slide_Link" />
         <child link="arm_yaw_Link" />
         <axis xyz="0 1 0" />
-        <limit lower="-0.5" upper="0.5" effort="100" velocity="1" />
+        <limit lower="-0.5" upper="0.5" effort="100" velocity="1.000001" />
     </joint>
     <link name="arm_pitch_Link">
         <inertial>
@@ -174,7 +174,7 @@
         <parent link="arm_yaw_Link" />
         <child link="arm_pitch_Link" />
         <axis xyz="-1 0 0" />
-        <limit lower="0" upper="1.57" effort="100" velocity="1" />
+        <limit lower="0" upper="1.57" effort="100" velocity="1.000001" />
     </joint>
     <link name="arm_roll_Link">
         <inertial>
@@ -203,7 +203,7 @@
         <parent link="arm_pitch_Link" />
         <child link="arm_roll_Link" />
         <axis xyz="0 0 -1" />
-        <limit lower="-6.28" upper="6.28" effort="100" velocity="1" />
+        <limit lower="-6.28" upper="6.28" effort="100" velocity="1.000001" />
     </joint>
     <link name="pitch_Link">
         <inertial>
@@ -232,7 +232,7 @@
         <parent link="arm_roll_Link" />
         <child link="pitch_Link" />
         <axis xyz="1 0 0" />
-        <limit lower="-1.57" upper="1.57" effort="100" velocity="1" />
+        <limit lower="-1.57" upper="1.57" effort="100" velocity="1.000001" />
     </joint>
     <link name="roll_Link">
         <inertial>
@@ -261,7 +261,7 @@
         <parent link="pitch_Link" />
         <child link="roll_Link" />
         <axis xyz="-1 0 0" />
-        <limit lower="-6.28" upper="6.28" effort="100" velocity="1" />
+        <limit lower="-6.28" upper="6.28" effort="100" velocity="1.000001" />
     </joint>
 
 </robot>

@@ -1,0 +1,11 @@
+# Default initial positions for engineer_description's ros2_control fake system
+
+initial_positions:
+  arm_pitch_joint: 0
+  arm_roll_joint: 0
+  arm_yaw_joint: 0
+  extend_joint: 0
+  pitch_joint: 0
+  roll_joint: 0
+  slide_joint: 0
+  uplift_joint: 0
