@@ -18,7 +18,7 @@
         <visual>
             <origin xyz="0 0 0" rpy="0 0 0" />
             <geometry>
-                <mesh filename="package://engineer_description/meshes/base_link.STL" />
+                <mesh filename="file://$(find engineer_description)/meshes/base_link.STL" />
             </geometry>
             <material name="">
                 <color rgba="0.752941176470588 0.752941176470588 0.752941176470588 1" />
@@ -27,7 +27,7 @@
         <collision>
             <origin xyz="0 0 0" rpy="0 0 0" />
             <geometry>
-                <mesh filename="package://engineer_description/meshes/base_link.STL" />
+                <mesh filename="file://$(find engineer_description)/meshes/base_link.STL" />
             </geometry>
         </collision>
     </link>
@@ -40,7 +40,7 @@
         <visual>
             <origin xyz="0 0 0" rpy="0 0 0" />
             <geometry>
-                <mesh filename="package://engineer_description/meshes/uplift_Link.STL" />
+                <mesh filename="file://$(find engineer_description)/meshes/uplift_Link.STL" />
             </geometry>
             <material name="">
                 <color rgba="1 1 1 1" />
@@ -49,7 +49,7 @@
         <collision>
             <origin xyz="0 0 0" rpy="0 0 0" />
             <geometry>
-                <mesh filename="package://engineer_description/meshes/uplift_Link.STL" />
+                <mesh filename="file://$(find engineer_description)/meshes/uplift_Link.STL" />
             </geometry>
         </collision>
     </link>
@@ -69,7 +69,7 @@
         <visual>
             <origin xyz="0 0 0" rpy="0 0 0" />
             <geometry>
-                <mesh filename="package://engineer_description/meshes/extend_Link.STL" />
+                <mesh filename="file://$(find engineer_description)/meshes/extend_Link.STL" />
             </geometry>
             <material name="">
                 <color rgba="1 1 1 1" />
@@ -78,7 +78,7 @@
         <collision>
             <origin xyz="0 0 0" rpy="0 0 0" />
             <geometry>
-                <mesh filename="package://engineer_description/meshes/extend_Link.STL" />
+                <mesh filename="file://$(find engineer_description)/meshes/extend_Link.STL" />
             </geometry>
         </collision>
     </link>
@@ -98,7 +98,7 @@
         <visual>
             <origin xyz="0 0 0" rpy="0 0 0" />
             <geometry>
-                <mesh filename="package://engineer_description/meshes/slide_Link.STL" />
+                <mesh filename="file://$(find engineer_description)/meshes/slide_Link.STL" />
             </geometry>
             <material name="">
                 <color rgba="1 1 1 1" />
@@ -107,7 +107,7 @@
         <collision>
             <origin xyz="0 0 0" rpy="0 0 0" />
             <geometry>
-                <mesh filename="package://engineer_description/meshes/slide_Link.STL" />
+                <mesh filename="file://$(find engineer_description)/meshes/slide_Link.STL" />
             </geometry>
         </collision>
     </link>
@@ -127,7 +127,7 @@
         <visual>
             <origin xyz="-0.065 0 0.027" rpy="0 0 0" />
             <geometry>
-                <mesh filename="package://engineer_description/meshes/arm_yaw_Link.STL" />
+                <mesh filename="file://$(find engineer_description)/meshes/arm_yaw_Link.STL" />
             </geometry>
             <material name="">
                 <color rgba="1 1 1 1" />
@@ -136,7 +136,7 @@
         <collision>
             <origin xyz="0 0 0" rpy="0 0 0" />
             <geometry>
-                <mesh filename="package://engineer_description/meshes/arm_yaw_Link.STL" />
+                <mesh filename="file://$(find engineer_description)/meshes/arm_yaw_Link.STL" />
             </geometry>
         </collision>
     </link>
@@ -156,7 +156,7 @@
         <visual>
             <origin xyz="0 0 0" rpy="0 0 0" />
             <geometry>
-                <mesh filename="package://engineer_description/meshes/arm_pitch_Link.STL" />
+                <mesh filename="file://$(find engineer_description)/meshes/arm_pitch_Link.STL" />
             </geometry>
             <material name="">
                 <color rgba="1 1 1 1" />
@@ -165,7 +165,7 @@
         <collision>
             <origin xyz="0 0 0" rpy="0 0 0" />
             <geometry>
-                <mesh filename="package://engineer_description/meshes/arm_pitch_Link.STL" />
+                <mesh filename="file://$(find engineer_description)/meshes/arm_pitch_Link.STL" />
             </geometry>
         </collision>
     </link>
@@ -185,7 +185,7 @@
         <visual>
             <origin xyz="0 0 0" rpy="0 0 0" />
             <geometry>
-                <mesh filename="package://engineer_description/meshes/arm_roll_Link.STL" />
+                <mesh filename="file://$(find engineer_description)/meshes/arm_roll_Link.STL" />
             </geometry>
             <material name="">
                 <color rgba="1 1 1 1" />
@@ -194,7 +194,7 @@
         <collision>
             <origin xyz="0 0 0" rpy="0 0 0" />
             <geometry>
-                <mesh filename="package://engineer_description/meshes/arm_roll_Link.STL" />
+                <mesh filename="file://$(find engineer_description)/meshes/arm_roll_Link.STL" />
             </geometry>
         </collision>
     </link>
@@ -214,7 +214,7 @@
         <visual>
             <origin xyz="0 0 0" rpy="0 0 0" />
             <geometry>
-                <mesh filename="package://engineer_description/meshes/pitch_Link.STL" />
+                <mesh filename="file://$(find engineer_description)/meshes/pitch_Link.STL" />
             </geometry>
             <material name="">
                 <color rgba="0.898039215686275 0.917647058823529 0.929411764705882 1" />
@@ -223,7 +223,7 @@
         <collision>
             <origin xyz="0 0 0" rpy="0 0 0" />
             <geometry>
-                <mesh filename="package://engineer_description/meshes/pitch_Link.STL" />
+                <mesh filename="file://$(find engineer_description)/meshes/pitch_Link.STL" />
             </geometry>
         </collision>
     </link>
@@ -243,7 +243,7 @@
         <visual>
             <origin xyz="0 0 0" rpy="0 0 0" />
             <geometry>
-                <mesh filename="package://engineer_description/meshes/roll_Link.STL" />
+                <mesh filename="file://$(find engineer_description)/meshes/roll_Link.STL" />
             </geometry>
             <material name="">
                 <color rgba="0.796078431372549 0.823529411764706 0.937254901960784 1" />
@@ -252,7 +252,7 @@
         <collision>
             <origin xyz="0 0 0" rpy="0 0 0" />
             <geometry>
-                <mesh filename="package://engineer_description/meshes/roll_Link.STL" />
+                <mesh filename="file://$(find engineer_description)/meshes/roll_Link.STL" />
             </geometry>
         </collision>
     </link>

@@ -9,7 +9,7 @@
     </joint>
 
     <!-- Import engineer_description urdf file -->
-    <xacro:include filename="$(find engineer_description)/urdf/engineer_description.urdf" />
+    <xacro:include filename="$(find engineer_description)/urdf/engineer_description_gazebo.urdf" />
 
 
     <!-- 对一些link进行gazebo的属性设置 -->
