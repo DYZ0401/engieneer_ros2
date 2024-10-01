@@ -20,6 +20,8 @@ find_package(tf2_ros REQUIRED)
 find_package(moveit_visual_tools REQUIRED)
 
 add_executable(engineer_control src/engineer_control.cpp)
+add_executable(engineer_frame src/engineer_frame.cpp)
+
 target_include_directories(engineer_control PUBLIC
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
   $<INSTALL_INTERFACE:include>)
@@ -34,7 +36,17 @@ ament_target_dependencies(
   "moveit_visual_tools"
 )
 
-install(TARGETS engineer_control
+ament_target_dependencies(
+  engineer_frame
+  "moveit_ros_planning_interface"
+  "rclcpp"
+  "geometry_msgs"
+  "tf2"
+  "tf2_ros"
+  "moveit_visual_tools"
+)
+
+install(TARGETS engineer_control engineer_frame
   DESTINATION lib/${PROJECT_NAME})
 
 if(BUILD_TESTING)
