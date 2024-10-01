@@ -59,13 +59,14 @@ int main(int argc, char** argv) {
 
     auto const target_pose = [] {
         geometry_msgs::msg::Pose msg;
-        msg.orientation.w = 1.0;
-        msg.position.x    = 0.28;
-        msg.position.y    = -0.2;
+        msg.orientation.w = 0.0;
+        msg.position.x    = 0.40;
+        msg.position.y    = 0.07;
         msg.position.z    = 0.5;
         return msg;
     }();
 
+    move_group_interface.setPoseReferenceFrame("engineer_frame");
     move_group_interface.setPoseTarget(target_pose);
 
     auto const [success, plan] = [&move_group_interface] {

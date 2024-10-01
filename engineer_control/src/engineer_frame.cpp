@@ -6,35 +6,53 @@
 #include <cstdlib>
 #include <cstring>
 #include <memory>
+#include <numbers>
 #include <rclcpp/executors.hpp>
 #include <rclcpp/logger.hpp>
 #include <rclcpp/logging.hpp>
 #include <rclcpp/rclcpp.hpp>
 #include <rclcpp/utilities.hpp>
-#include "tf2/LinearMath/Quaternion.h"
+#include <string>
+
 #include "geometry_msgs/msg/transform_stamped.hpp"
+#include "tf2/LinearMath/Quaternion.h"
+
+struct frame_data_t {
+    std::string frame_id;
+    std::string child_id;
+    float       x;
+    float       y;
+    float       z;
+    float       yaw;
+    float       pitch;
+    float       roll;
+};
+
+const frame_data_t engineer_frame = {
+    "base_link", "engineer_frame", -0.36, 0.08, 0.30, -3.1415926 / 2.f, 0, 0,
+};
 
 class StaticFramePublisher : public rclcpp::Node {
 public:
-    explicit StaticFramePublisher(char *transformation[]) : Node("engineer_frame") {
+    explicit StaticFramePublisher(const frame_data_t *data) : Node("engineer_frame") {
         tf_static_broadcaster_ = std::make_shared<tf2_ros::StaticTransformBroadcaster>(this);
-        this->make_transforms(transformation);
+        this->make_transforms(data);
     }
 
 private:
     std::shared_ptr<tf2_ros::StaticTransformBroadcaster> tf_static_broadcaster_;
 
-    void make_transforms(char *transformation[]) {
+    void make_transforms(const frame_data_t *data) {
         geometry_msgs::msg::TransformStamped t;
         t.header.stamp    = this->get_clock()->now();
-        t.header.frame_id = "base_link";
-        t.child_frame_id  = transformation[1];
+        t.header.frame_id = data->frame_id;
+        t.child_frame_id  = data->child_id;
 
-        t.transform.translation.x = atof(transformation[2]);
-        t.transform.translation.y = atof(transformation[3]);
-        t.transform.translation.z = atof(transformation[4]);
+        t.transform.translation.x = data->x;
+        t.transform.translation.y = data->y;
+        t.transform.translation.z = data->z;
         tf2::Quaternion q;
-        q.setRPY(atof(transformation[5]), atof(transformation[6]), atof(transformation[7]));
+        q.setRPY(data->roll, data->pitch, data->yaw);
         t.transform.rotation.x = q.x();
         t.transform.rotation.y = q.y();
         t.transform.rotation.z = q.z();
@@ -46,16 +64,8 @@ private:
 
 int main(int argc, char *argv[]) {
     auto logger = rclcpp::get_logger("engieneer_frame");
-
-    if (argc != 8) {
-        RCLCPP_INFO(logger, "Invalid number of parameters\nusage: "
-                            "$ ros2 run learning_tf2_cpp static_turtle_tf2_broadcaster "
-                            "child_frame_name x y z roll pitch yaw");
-        return 1;
-    }
-
     rclcpp::init(argc, argv);
-    rclcpp::spin(std::make_shared<StaticFramePublisher>(argv));
+    rclcpp::spin(std::make_shared<StaticFramePublisher>(&engineer_frame));
     rclcpp::shutdown();
     return 0;
 }
