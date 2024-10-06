@@ -1,1 +1,1 @@
-uint32 key_code
+int32 key_code

@@ -24,7 +24,7 @@ find_package(custom_interfaces REQUIRED)
 add_executable(engineer_control src/engineer_control.cpp)
 add_executable(engineer_frame src/engineer_frame.cpp)
 add_executable(key_control src/key_control.cpp)
-# add_executable(control_scheduling src/control_scheduling.cpp)
+add_executable(control_scheduling src/control_scheduling.cpp)
 
 
 INCLUDE_DIRECTORIES(
@@ -70,19 +70,19 @@ ament_target_dependencies(
   "custom_interfaces"
 )
 
-# ament_target_dependencies(
-#   control_scheduling
-#   "moveit_ros_planning_interface"
-#   "rclcpp"
-#   "geometry_msgs"
-#   "tf2"
-#   "tf2_ros"
-#   "moveit_visual_tools"
-#   "custom_interfaces"
-# )
+ament_target_dependencies(
+  control_scheduling
+  "moveit_ros_planning_interface"
+  "rclcpp"
+  "geometry_msgs"
+  "tf2"
+  "tf2_ros"
+  "moveit_visual_tools"
+  "custom_interfaces"
+)
 
 
-install(TARGETS engineer_control engineer_frame key_control
+install(TARGETS engineer_control engineer_frame key_control control_scheduling
   DESTINATION lib/${PROJECT_NAME})
 
   # Install launch files.

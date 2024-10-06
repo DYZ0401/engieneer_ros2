@@ -1,0 +1,11 @@
+control_scheduling:
+  ros_parameters:
+    ctrl_dof:
+      x:400
+      y:70
+      z:20
+      yaw:0
+      pitch:0
+      roll:0
+      arm_yaw:0
+      arm_pitch:0

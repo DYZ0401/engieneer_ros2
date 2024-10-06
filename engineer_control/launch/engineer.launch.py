@@ -11,19 +11,34 @@ def generate_launch_description():
                                                     'launch'),'/demo.launch.py'])
 
     )
+
+    package_directory = get_package_share_directory("engineer_control")
+    initial_dof_yaml = package_directory + '/config/initial_dof.yaml'
     return LaunchDescription([
         Node(
             package = "engineer_control",
             executable = "engineer_control",
             name = "engineer_control",
-            output = "screen"
         ),
         Node(
             package = "engineer_control",
             executable = "engineer_frame",
             name = "engineer_frame",
+        ),
+        Node(
+            package = "engineer_control",
+            executable = "key_control",
+            name = "key_control",
             output = "screen"
         ),
+        Node(
+            package = "engineer_control",
+            executable = "control_scheduling",
+            name = "control_scheduling",
+            parameters = [initial_dof_yaml],
+            output = "screen"
+        ),
+        
         moveit_launch
     ])
 
