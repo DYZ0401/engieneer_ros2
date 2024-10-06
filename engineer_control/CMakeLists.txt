@@ -18,14 +18,26 @@ find_package(geometry_msgs REQUIRED)
 find_package(tf2 REQUIRED)
 find_package(tf2_ros REQUIRED)
 find_package(moveit_visual_tools REQUIRED)
+find_package(custom_interfaces REQUIRED)
+
 
 add_executable(engineer_control src/engineer_control.cpp)
 add_executable(engineer_frame src/engineer_frame.cpp)
+add_executable(key_control src/key_control.cpp)
+# add_executable(control_scheduling src/control_scheduling.cpp)
+
+
+INCLUDE_DIRECTORIES(
+  ${CMAKE_CURRENT_SOURCE_DIR}/include/engineer_control/
+)
+
 
 target_include_directories(engineer_control PUBLIC
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
   $<INSTALL_INTERFACE:include>)
 target_compile_features(engineer_control PUBLIC c_std_99 cxx_std_17)  # Require C99 and C++17
+
+
 ament_target_dependencies(
   engineer_control
   "moveit_ros_planning_interface"
@@ -34,6 +46,7 @@ ament_target_dependencies(
   "tf2"
   "tf2_ros"
   "moveit_visual_tools"
+  "custom_interfaces"
 )
 
 ament_target_dependencies(
@@ -46,7 +59,30 @@ ament_target_dependencies(
   "moveit_visual_tools"
 )
 
-install(TARGETS engineer_control engineer_frame
+ament_target_dependencies(
+  key_control
+  "moveit_ros_planning_interface"
+  "rclcpp"
+  "geometry_msgs"
+  "tf2"
+  "tf2_ros"
+  "moveit_visual_tools"
+  "custom_interfaces"
+)
+
+# ament_target_dependencies(
+#   control_scheduling
+#   "moveit_ros_planning_interface"
+#   "rclcpp"
+#   "geometry_msgs"
+#   "tf2"
+#   "tf2_ros"
+#   "moveit_visual_tools"
+#   "custom_interfaces"
+# )
+
+
+install(TARGETS engineer_control engineer_frame key_control
   DESTINATION lib/${PROJECT_NAME})
 
   # Install launch files.

@@ -5,6 +5,8 @@
 #include <cstdio>
 #include <geometry_msgs/msg/detail/pose__struct.hpp>
 #include <memory>
+#include <moveit_msgs/msg/detail/constraints__struct.hpp>
+#include <moveit_msgs/msg/detail/joint_constraint__struct.hpp>
 #include <rclcpp/executors/single_threaded_executor.hpp>
 #include <rclcpp/logger.hpp>
 #include <rclcpp/logging.hpp>
@@ -33,6 +35,7 @@ int main(int argc, char** argv) {
     using moveit::planning_interface::MoveGroupInterface;
     auto move_group_interface = MoveGroupInterface(node, "arm");
 
+    // gui注释
     auto moveit_visual_tools = moveit_visual_tools::MoveItVisualTools{
         node, "base_link", rviz_visual_tools::RVIZ_MARKER_TOPIC, move_group_interface.getRobotModel()};
     moveit_visual_tools.deleteAllMarkers();
@@ -56,6 +59,29 @@ int main(int argc, char** argv) {
          jmg = move_group_interface.getRobotModel()->getJointModelGroup("arm")](auto const trajectory) {
             moveit_visual_tools.publishTrajectoryLine(trajectory, jmg);
         };
+
+    //定义冗余关节角度
+    float arm_yaw_set = 0.0f;
+    float arm_pitch_set = 0.0f;
+    // 声明目标位置
+
+    moveit_msgs::msg::Constraints constraints;
+    moveit_msgs::msg::JointConstraint joint_constraint;
+
+    joint_constraint.joint_name="arm_yaw";
+    joint_constraint.position  = arm_yaw_set;
+    joint_constraint.tolerance_above = 0.001;
+    joint_constraint.tolerance_below = 0.001;
+    constraints.joint_constraints.push_back(joint_constraint);
+
+    joint_constraint.joint_name="arm_pitch";
+    joint_constraint.position  = arm_pitch_set;
+    joint_constraint.tolerance_above = 0.001;
+    joint_constraint.tolerance_below = 0.001;
+    constraints.joint_constraints.push_back(joint_constraint);
+
+    move_group_interface.setPathConstraints(constraints);
+
 
     auto const target_pose = [] {
         geometry_msgs::msg::Pose msg;
