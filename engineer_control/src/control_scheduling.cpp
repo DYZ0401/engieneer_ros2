@@ -20,6 +20,7 @@ using namespace std::chrono_literals;
 
 class ControlSchedulingNode : public rclcpp::Node {
 private:
+    bool initail_flag = false;
     custom_interfaces::msg::Key key;
     custom_interfaces::msg::CtrlDof ctrl_dof;
     rclcpp::TimerBase::SharedPtr timer_;
@@ -27,6 +28,10 @@ private:
     rclcpp::Subscription<custom_interfaces::msg::Key>::SharedPtr subscription_;
 
     void timer_callback() {
+        if (!initail_flag) {
+            this->init_dof();
+            initail_flag = true;
+        }
         auto message = custom_interfaces::msg::CtrlDof();
         message = this->ctrl_dof;
         publisher_->publish(message);
@@ -34,6 +39,7 @@ private:
 
     void key_topic_callback(const custom_interfaces::msg::Key& key) {
         this->key = key;
+        this->ctrl_to_dof();
         RCLCPP_INFO(this->get_logger(), "key_code: %c", this->key.key_code);
     }
 
@@ -50,16 +56,29 @@ private:
         }
     }
 
-    void init_dof() {
-        this->get_parameter("initital_ctrl_dof.x",this->ctrl_dof.x);
-        this->get_parameter("initital_ctrl_dof.y",this->ctrl_dof.y);
-        this->get_parameter("initital_ctrl_dof.z",this->ctrl_dof.z);
-        this->get_parameter("initital_ctrl_dof.yaw",this->ctrl_dof.yaw);
-        this->get_parameter("initital_ctrl_dof.pitch",this->ctrl_dof.pitch);
-        this->get_parameter("initital_ctrl_dof.roll",this->ctrl_dof.roll);
-        this->get_parameter("initital_ctrl_dof.arm_yaw",this->ctrl_dof.arm_yaw);
-        this->get_parameter("initital_ctrl_dof.arm_pitch",this->ctrl_dof.arm_pitch);
+    void declare_dof_param() {
+        this->declare_parameter<double>("initial_ctrl_dof.x", 0);
+        this->declare_parameter<double>("initial_ctrl_dof.y", 0);
+        this->declare_parameter<double>("initial_ctrl_dof.z", 0);
+        this->declare_parameter<double>("initial_ctrl_dof.pitch", 0);
+        this->declare_parameter<double>("initial_ctrl_dof.roll", 0);
+        this->declare_parameter<double>("initial_ctrl_dof.yaw", 0);
+        this->declare_parameter<double>("initial_ctrl_dof.arm_yaw", 0);
+        this->declare_parameter<double>("initial_ctrl_dof.arm_pitch", 0);
+    }
 
+    void init_dof() {
+
+        this->get_parameter("initial_ctrl_dof.x", this->ctrl_dof.x);
+        this->get_parameter("initial_ctrl_dof.y", this->ctrl_dof.y);
+        this->get_parameter("initial_ctrl_dof.z", this->ctrl_dof.z);
+        this->get_parameter("initial_ctrl_dof.yaw", this->ctrl_dof.yaw);
+        this->get_parameter("initial_ctrl_dof.pitch", this->ctrl_dof.pitch);
+        this->get_parameter("initial_ctrl_dof.roll", this->ctrl_dof.roll);
+        this->get_parameter("initial_ctrl_dof.arm_yaw", this->ctrl_dof.arm_yaw);
+        this->get_parameter("initial_ctrl_dof.arm_pitch", this->ctrl_dof.arm_pitch);
+        RCLCPP_INFO(this->get_logger(), "initial_ctrl_dof.x: %f",
+                    this->get_parameter("initial_ctrl_dof.x").get_value<double>());
     }
 
 public:
@@ -68,7 +87,7 @@ public:
             "key", 10, std::bind(&ControlSchedulingNode::key_topic_callback, this, _1));
         publisher_ = this->create_publisher<custom_interfaces::msg::CtrlDof>("ctrl_dof", 10);
         timer_ = this->create_wall_timer(500ms, std::bind(&ControlSchedulingNode::timer_callback, this));
-        this->init_dof();
+        this->declare_dof_param();
     }
 };
 

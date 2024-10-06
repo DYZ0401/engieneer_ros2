@@ -35,7 +35,7 @@ INCLUDE_DIRECTORIES(
 target_include_directories(engineer_control PUBLIC
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
   $<INSTALL_INTERFACE:include>)
-target_compile_features(engineer_control PUBLIC c_std_99 cxx_std_17)  # Require C99 and C++17
+target_compile_features(engineer_control PUBLIC c_std_99 cxx_std_20)  # Require C99 and C++17
 
 
 ament_target_dependencies(
@@ -88,6 +88,11 @@ install(TARGETS engineer_control engineer_frame key_control control_scheduling
   # Install launch files.
 install(DIRECTORY
 launch
+DESTINATION share/${PROJECT_NAME}/
+)
+
+install(DIRECTORY
+config
 DESTINATION share/${PROJECT_NAME}/
 )
 
