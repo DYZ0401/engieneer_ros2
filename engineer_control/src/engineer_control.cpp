@@ -158,7 +158,8 @@ private:
     }
 
 public:
-    EngineerControlNode() : Node("engineer_control") {
+    EngineerControlNode()
+        : Node("engineer_control", rclcpp::NodeOptions().automatically_declare_parameters_from_overrides(true)) {
         subscription_ = this->create_subscription<custom_interfaces::msg::CtrlDof>(
             "ctrl_dof", 10, std::bind(&EngineerControlNode::ctrl_dof_topic_callback, this, _1));
     }
