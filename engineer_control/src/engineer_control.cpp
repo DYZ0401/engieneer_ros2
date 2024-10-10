@@ -62,7 +62,7 @@ private:
 
         moveit_visual_tools_->deleteAllMarkers();
         moveit_visual_tools_->loadRemoteControl();
-        move_group_interface_->setPoseReferenceFrame("base_link");
+        move_group_interface_->setPoseReferenceFrame("engineer_frame");
     }
 
     //话题节点通讯
@@ -73,7 +73,7 @@ private:
         }
         this->ctrl_dof_mm = ctrl_dof;
         // this->unit_conversion();
-        // this->limit_redundant_degrees_of_freedom();
+        this->limit_redundant_degrees_of_freedom();
         this->set_pose();
     }
 
@@ -95,13 +95,13 @@ private:
         moveit_msgs::msg::JointConstraint joint_constraint;
         move_group_interface_->clearPathConstraints();
         joint_constraint.joint_name = "arm_yaw_joint";
-        joint_constraint.position = this->ctrl_dof_m.arm_yaw;
+        joint_constraint.position = 0.0;
         joint_constraint.tolerance_above = 0.001;
         joint_constraint.tolerance_below = 0.001;
         constraints.joint_constraints.push_back(joint_constraint);
 
         joint_constraint.joint_name = "arm_pitch_joint";
-        joint_constraint.position = this->ctrl_dof_m.arm_pitch;
+        joint_constraint.position = 0.0;
         joint_constraint.tolerance_above = 0.001;
         joint_constraint.tolerance_below = 0.001;
         constraints.joint_constraints.push_back(joint_constraint);
@@ -124,17 +124,13 @@ private:
             // msg.position.y = this->ctrl_dof_m.y;
             // msg.position.z = this->ctrl_dof_m.z;
 
-            msg.orientation.w = 1.0;
-            msg.orientation.x = 0;
-            msg.orientation.y = 0;
-            msg.orientation.z = 0;
-
-            msg.position.x = 0.28;
-            msg.position.y = -0.2;
+            msg.position.x = 0.6;
+            msg.position.y = 0.0;
             msg.position.z = 0.5;
             return msg;
         }();
 
+        move_group_interface_->setPlanningTime(100.0);
         move_group_interface_->setPoseTarget(target_pose);
 
         auto const [success, plan] = [this] {
@@ -144,15 +140,15 @@ private:
         }();
 
         if (success) {
-            draw_trajectory_tool_path(plan.trajectory_);
-            moveit_visual_tools_->trigger();
-            prompt("Press 'Next' in the RvizVisualToolsGui window to excute");
-            draw_title("Executing");
-            moveit_visual_tools_->trigger();
+            // draw_trajectory_tool_path(plan.trajectory_);
+            // moveit_visual_tools_->trigger();
+            // prompt("Press 'Next' in the RvizVisualToolsGui window to excute");
+            // draw_title("Executing");
+            // moveit_visual_tools_->trigger();
             move_group_interface_->execute(plan);
         } else {
-            draw_title("Planning Failed!");
-            moveit_visual_tools_->trigger();
+            // draw_title("Planning Failed!");
+            // moveit_visual_tools_->trigger();
             RCLCPP_ERROR(this->get_logger(), "Planning failed");
         }
     }

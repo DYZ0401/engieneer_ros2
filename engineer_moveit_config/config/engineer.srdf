@@ -3,7 +3,7 @@
     This is a format for representing semantic information about the robot structure.
     A URDF file must exist for this robot as well, where the joints and the links that are referenced are defined
 -->
-<robot name="engineer_description">
+<robot name="engineer">
     <!--GROUPS: Representation of a set of joints and links. This can be useful for specifying DOF to plan for, defining arms, end effectors, etc-->
     <!--LINKS: When a link is specified, the parent joint of that link (if it exists) is automatically included-->
     <!--JOINTS: When a joint is specified, the child link of that joint (which will always exist) is automatically included-->
@@ -30,7 +30,7 @@
         <joint name="extend_joint" value="0"/>
         <joint name="pitch_joint" value="0"/>
         <joint name="roll_joint" value="0"/>
-        <joint name="slide_joint" value="0.069"/>
+        <joint name="slide_joint" value="0.0698"/>
         <joint name="uplift_joint" value="0"/>
     </group_state>
     <!--END EFFECTOR: Purpose: Represent information about an end effector.-->

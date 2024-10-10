@@ -1,0 +1,268 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- This URDF was automatically created by SolidWorks to URDF Exporter! Originally created by Stephen Brawner (brawner@gmail.com) 
+     Commit Version: 1.6.0-4-g7f85cfe  Build Version: 1.6.7995.38578
+     For more information, please see http://wiki.ros.org/sw_urdf_exporter -->
+<robot name="engineer">
+    <link name="dummy" />
+    <joint name="dummy_joint" type="fixed">
+        <origin xyz="0 0 0" rpy="0 0 1.57" />
+        <parent link="dummy" />
+        <child link="base_link" />
+    </joint>
+    <link name="base_link">
+        <inertial>
+            <origin xyz="-0.288926800862263 0.341162145556413 -0.185664178118648" rpy="0 0 0" />
+            <mass value="0.00001" />
+            <inertia ixx="10" ixy="0" ixz="0" iyy="10" iyz="0" izz="10" />
+        </inertial>
+        <visual>
+            <origin xyz="0 0 0" rpy="0 0 0" />
+            <geometry>
+                <mesh filename="package://engineer_description/meshes/base_link.STL" />
+            </geometry>
+            <material name="">
+                <color rgba="0.752941176470588 0.752941176470588 0.752941176470588 1" />
+            </material>
+        </visual>
+        <collision>
+            <origin xyz="0 0 0" rpy="0 0 0" />
+            <geometry>
+                <mesh filename="package://engineer_description/meshes/base_link.STL" />
+            </geometry>
+        </collision>
+    </link>
+    <link name="uplift_Link">
+        <inertial>
+            <origin xyz="0.144500000000001 0.212634252637614 -0.0290559483353577" rpy="0 0 0" />
+            <mass value="0.00001" />
+            <inertia ixx="10" ixy="0" ixz="0" iyy="10" iyz="0" izz="10" />
+        </inertial>
+        <visual>
+            <origin xyz="0 0 0" rpy="0 0 0" />
+            <geometry>
+                <mesh filename="package://engineer_description/meshes/uplift_Link.STL" />
+            </geometry>
+            <material name="">
+                <color rgba="1 1 1 1" />
+            </material>
+        </visual>
+        <collision>
+            <origin xyz="0 0 0" rpy="0 0 0" />
+            <geometry>
+                <mesh filename="package://engineer_description/meshes/uplift_Link.STL" />
+            </geometry>
+        </collision>
+    </link>
+    <joint name="uplift_joint" type="prismatic">
+        <origin xyz="-0.14393 0.2505 0.19643" rpy="0 0 -3.1416" />
+        <parent link="base_link" />
+        <child link="uplift_Link" />
+        <axis xyz="0 0 1" />
+        <limit lower="0" upper="0.66" effort="100" velocity="1.000001" />
+    </joint>
+    <link name="extend_Link">
+        <inertial>
+            <origin xyz="3.08764571280706E-05 0.00571135760942115 -0.0142912055436517" rpy="0 0 0" />
+            <mass value="0.00001" />
+            <inertia ixx="10" ixy="0" ixz="0" iyy="10" iyz="0" izz="10" />
+        </inertial>
+        <visual>
+            <origin xyz="0 0 0" rpy="0 0 0" />
+            <geometry>
+                <mesh filename="package://engineer_description/meshes/extend_Link.STL" />
+            </geometry>
+            <material name="">
+                <color rgba="1 1 1 1" />
+            </material>
+        </visual>
+        <collision>
+            <origin xyz="0 0 0" rpy="0 0 0" />
+            <geometry>
+                <mesh filename="package://engineer_description/meshes/extend_Link.STL" />
+            </geometry>
+        </collision>
+    </link>
+    <joint name="extend_joint" type="prismatic">
+        <origin xyz="0.1445 0.115 0.013" rpy="1.5708 0 0" />
+        <parent link="uplift_Link" />
+        <child link="extend_Link" />
+        <axis xyz="0 0 -1" />
+        <limit lower="0" upper="0.66" effort="100" velocity="1.000001" />
+    </joint>
+    <link name="slide_Link">
+        <inertial>
+            <origin xyz="0.0352660608065838 0.0389862866052242 -0.0301817638795753" rpy="0 0 0" />
+            <mass value="0.00001" />
+            <inertia ixx="10" ixy="0" ixz="0" iyy="10" iyz="0" izz="10" />
+        </inertial>
+        <visual>
+            <origin xyz="0 0 0" rpy="0 0 0" />
+            <geometry>
+                <mesh filename="package://engineer_description/meshes/slide_Link.STL" />
+            </geometry>
+            <material name="">
+                <color rgba="1 1 1 1" />
+            </material>
+        </visual>
+        <collision>
+            <origin xyz="0 0 0" rpy="0 0 0" />
+            <geometry>
+                <mesh filename="package://engineer_description/meshes/slide_Link.STL" />
+            </geometry>
+        </collision>
+    </link>
+    <joint name="slide_joint" type="prismatic">
+        <origin xyz="0.04035 0.017 -0.0805" rpy="0 -1.5708 0" />
+        <parent link="extend_Link" />
+        <child link="slide_Link" />
+        <axis xyz="0 0 1" />
+        <limit lower="0" upper="0.138" effort="100" velocity="1.000001" />
+    </joint>
+    <link name="arm_yaw_Link">
+        <inertial>
+            <origin xyz="-0.082 -0.0124971092307177 -0.0064843307519911" rpy="0 0 0" />
+            <mass value="0.00001" />
+            <inertia ixx="10" ixy="0" ixz="0" iyy="10" iyz="0" izz="10" />
+        </inertial>
+        <visual>
+            <origin xyz="-0.065 0 0.027" rpy="0 0 0" />
+            <geometry>
+                <mesh filename="package://engineer_description/meshes/arm_yaw_Link.STL" />
+            </geometry>
+            <material name="">
+                <color rgba="1 1 1 1" />
+            </material>
+        </visual>
+        <collision>
+            <origin xyz="0 0 0" rpy="0 0 0" />
+            <geometry>
+                <mesh filename="package://engineer_description/meshes/arm_yaw_Link.STL" />
+            </geometry>
+        </collision>
+    </link>
+    <joint name="arm_yaw_joint" type="revolute">
+        <origin xyz="0.028141 0.0991 -0.0305" rpy="0 0 0" />
+        <parent link="slide_Link" />
+        <child link="arm_yaw_Link" />
+        <axis xyz="0 1 0" />
+        <limit lower="-0.5" upper="0.5" effort="100" velocity="1.000001" />
+    </joint>
+    <link name="arm_pitch_Link">
+        <inertial>
+            <origin xyz="-0.0175885979506964 -0.00282866653830499 0.0276708731942" rpy="0 0 0" />
+            <mass value="0.00001" />
+            <inertia ixx="10" ixy="0" ixz="0" iyy="10" iyz="0" izz="10" />
+        </inertial>
+        <visual>
+            <origin xyz="0 0 0" rpy="0 0 0" />
+            <geometry>
+                <mesh filename="package://engineer_description/meshes/arm_pitch_Link.STL" />
+            </geometry>
+            <material name="">
+                <color rgba="1 1 1 1" />
+            </material>
+        </visual>
+        <collision>
+            <origin xyz="0 0 0" rpy="0 0 0" />
+            <geometry>
+                <mesh filename="package://engineer_description/meshes/arm_pitch_Link.STL" />
+            </geometry>
+        </collision>
+    </link>
+    <joint name="arm_pitch_joint" type="revolute">
+        <origin xyz="-0.1845 -0.0202 0.0003" rpy="3.1416 1.5708 0" />
+        <parent link="arm_yaw_Link" />
+        <child link="arm_pitch_Link" />
+        <axis xyz="-1 0 0" />
+        <limit lower="0" upper="1.57" effort="100" velocity="1.000001" />
+    </joint>
+    <link name="arm_roll_Link">
+        <inertial>
+            <origin xyz="-0.00217786926644958 0.00125739185470541 -0.040380529650322" rpy="0 0 0" />
+            <mass value="0.00001" />
+            <inertia ixx="10" ixy="0" ixz="0" iyy="10" iyz="0" izz="10" />
+        </inertial>
+        <visual>
+            <origin xyz="0 0 0" rpy="0 0 0" />
+            <geometry>
+                <mesh filename="package://engineer_description/meshes/arm_roll_Link.STL" />
+            </geometry>
+            <material name="">
+                <color rgba="1 1 1 1" />
+            </material>
+        </visual>
+        <collision>
+            <origin xyz="0 0 0" rpy="0 0 0" />
+            <geometry>
+                <mesh filename="package://engineer_description/meshes/arm_roll_Link.STL" />
+            </geometry>
+        </collision>
+    </link>
+    <joint name="arm_roll_joint" type="revolute">
+        <origin xyz="0 0 0.057" rpy="3.1416 0 1.0472" />
+        <parent link="arm_pitch_Link" />
+        <child link="arm_roll_Link" />
+        <axis xyz="0 0 -1" />
+        <limit lower="-6.28" upper="6.28" effort="100" velocity="1.000001" />
+    </joint>
+    <link name="pitch_Link">
+        <inertial>
+            <origin xyz="-6.34133573429452E-09 -3.33749694547691E-11 -2.04926658975424E-09" rpy="0 0 0" />
+            <mass value="0.00001" />
+            <inertia ixx="10" ixy="0" ixz="0" iyy="10" iyz="0" izz="10" />
+        </inertial>
+        <visual>
+            <origin xyz="0 0 0" rpy="0 0 0" />
+            <geometry>
+                <mesh filename="package://engineer_description/meshes/pitch_Link.STL" />
+            </geometry>
+            <material name="">
+                <color rgba="0.898039215686275 0.917647058823529 0.929411764705882 1" />
+            </material>
+        </visual>
+        <collision>
+            <origin xyz="0 0 0" rpy="0 0 0" />
+            <geometry>
+                <mesh filename="package://engineer_description/meshes/pitch_Link.STL" />
+            </geometry>
+        </collision>
+    </link>
+    <joint name="pitch_joint" type="revolute">
+        <origin xyz="0 0 -0.125" rpy="-1.5674 0 -2.0944" />
+        <parent link="arm_roll_Link" />
+        <child link="pitch_Link" />
+        <axis xyz="1 0 0" />
+        <limit lower="-1.57" upper="1.57" effort="100" velocity="1.000001" />
+    </joint>
+    <link name="roll_Link">
+        <inertial>
+            <origin xyz="0.0713401937594155 -2.0402457501234E-11 4.11626635554718E-12" rpy="0 0 0" />
+            <mass value="0.00001" />
+            <inertia ixx="10" ixy="0" ixz="0" iyy="10" iyz="0" izz="10" />
+        </inertial>
+        <visual>
+            <origin xyz="0 0 0" rpy="0 0 0" />
+            <geometry>
+                <mesh filename="package://engineer_description/meshes/roll_Link.STL" />
+            </geometry>
+            <material name="">
+                <color rgba="0.796078431372549 0.823529411764706 0.937254901960784 1" />
+            </material>
+        </visual>
+        <collision>
+            <origin xyz="0 0 0" rpy="0 0 0" />
+            <geometry>
+                <mesh filename="package://engineer_description/meshes/roll_Link.STL" />
+            </geometry>
+        </collision>
+    </link>
+    <joint name="roll_joint" type="revolute">
+        <origin xyz="0 0.091246 0" rpy="0.73644 0 -1.5708" />
+        <parent link="pitch_Link" />
+        <child link="roll_Link" />
+        <axis xyz="-1 0 0" />
+        <limit lower="-6.28" upper="6.28" effort="100" velocity="1.000001" />
+    </joint>
+
+</robot>
+

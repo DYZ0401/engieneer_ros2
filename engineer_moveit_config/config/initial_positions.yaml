@@ -1,4 +1,4 @@
-# Default initial positions for engineer_description's ros2_control fake system
+# Default initial positions for engineer's ros2_control fake system
 
 initial_positions:
   arm_pitch_joint: 0

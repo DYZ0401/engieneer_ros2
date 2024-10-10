@@ -1,13 +1,13 @@
 moveit_setup_assistant_config:
   urdf:
     package: engineer_description
-    relative_path: urdf/engineer_description.urdf
+    relative_path: urdf/engineer.urdf
   srdf:
-    relative_path: config/engineer_description.srdf
+    relative_path: config/engineer.srdf
   package_settings:
     author_name: dyz
     author_email: 3414709125@qq.com
-    generated_timestamp: 1727624511
+    generated_timestamp: 1728549075
   control_xacro:
     command:
       - position
