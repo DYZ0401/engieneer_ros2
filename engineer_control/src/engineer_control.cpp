@@ -62,7 +62,10 @@ private:
 
         moveit_visual_tools_->deleteAllMarkers();
         moveit_visual_tools_->loadRemoteControl();
-        move_group_interface_->setPoseReferenceFrame("engineer_frame");
+        move_group_interface_->setStartStateToCurrentState();
+        move_group_interface_->clearPathConstraints();
+        move_group_interface_->setPlanningTime(100.0);
+        // move_group_interface_->setPoseReferenceFrame("engineer_frame");
     }
 
     //话题节点通讯
@@ -73,7 +76,7 @@ private:
         }
         this->ctrl_dof_mm = ctrl_dof;
         // this->unit_conversion();
-        this->limit_redundant_degrees_of_freedom();
+        // this->limit_redundant_degrees_of_freedom();
         this->set_pose();
     }
 
@@ -96,14 +99,16 @@ private:
         move_group_interface_->clearPathConstraints();
         joint_constraint.joint_name = "arm_yaw_joint";
         joint_constraint.position = 0.0;
-        joint_constraint.tolerance_above = 0.001;
-        joint_constraint.tolerance_below = 0.001;
+        joint_constraint.tolerance_above = 10;
+        joint_constraint.tolerance_below = 10;
+        joint_constraint.weight = 1.0;
         constraints.joint_constraints.push_back(joint_constraint);
 
         joint_constraint.joint_name = "arm_pitch_joint";
         joint_constraint.position = 0.0;
-        joint_constraint.tolerance_above = 0.001;
-        joint_constraint.tolerance_below = 0.001;
+        joint_constraint.tolerance_above = 10;
+        joint_constraint.tolerance_below = 10;
+        joint_constraint.weight = 1.0;
         constraints.joint_constraints.push_back(joint_constraint);
 
         move_group_interface_->setPathConstraints(constraints);
@@ -113,25 +118,31 @@ private:
         auto const target_pose = [this] {
             geometry_msgs::msg::Pose msg;
             tf2::Quaternion q;
-            q.setRPY(this->ctrl_dof_m.roll, this->ctrl_dof_m.pitch, this->ctrl_dof_m.yaw);
+            // q.setRPY(this->ctrl_dof_m.roll, this->ctrl_dof_m.pitch, this->ctrl_dof_m.yaw);
+            // q.setRPY(0, 0, 0);
 
             // msg.orientation.w = q.w();
             // msg.orientation.x = q.x();
             // msg.orientation.y = q.y();
             // msg.orientation.z = q.z();
 
-            // msg.position.x = this->ctrl_dof_m.x;
-            // msg.position.y = this->ctrl_dof_m.y;
-            // msg.position.z = this->ctrl_dof_m.z;
+            // // msg.position.x = this->ctrl_dof_m.x;
+            // // msg.position.y = this->ctrl_dof_m.y;
+            // // msg.position.z = this->ctrl_dof_m.z;
+            // msg.position.x = 0.6;
+            // msg.position.y = 0.2;
+            // msg.position.z = 0.5;
 
-            msg.position.x = 0.6;
-            msg.position.y = 0.0;
+            msg.orientation.w = 1.0;
+            msg.position.x = 0.28;
+            msg.position.y = -0.2;
             msg.position.z = 0.5;
             return msg;
         }();
 
-        move_group_interface_->setPlanningTime(100.0);
-        move_group_interface_->setPoseTarget(target_pose);
+        if (!move_group_interface_->setPoseTarget(target_pose)) {
+            RCLCPP_ERROR(this->get_logger(), "Pose Error");
+        }
 
         auto const [success, plan] = [this] {
             moveit::planning_interface::MoveGroupInterface::Plan msg;
@@ -140,15 +151,15 @@ private:
         }();
 
         if (success) {
-            // draw_trajectory_tool_path(plan.trajectory_);
-            // moveit_visual_tools_->trigger();
-            // prompt("Press 'Next' in the RvizVisualToolsGui window to excute");
-            // draw_title("Executing");
-            // moveit_visual_tools_->trigger();
+            draw_trajectory_tool_path(plan.trajectory_);
+            moveit_visual_tools_->trigger();
+            prompt("Press 'Next' in the RvizVisualToolsGui window to excute");
+            draw_title("Executing");
+            moveit_visual_tools_->trigger();
             move_group_interface_->execute(plan);
         } else {
-            // draw_title("Planning Failed!");
-            // moveit_visual_tools_->trigger();
+            draw_title("Planning Failed!");
+            moveit_visual_tools_->trigger();
             RCLCPP_ERROR(this->get_logger(), "Planning failed");
         }
     }

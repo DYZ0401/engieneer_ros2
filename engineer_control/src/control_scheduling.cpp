@@ -86,7 +86,7 @@ public:
         subscription_ = this->create_subscription<custom_interfaces::msg::Key>(
             "key", 10, std::bind(&ControlSchedulingNode::key_topic_callback, this, _1));
         publisher_ = this->create_publisher<custom_interfaces::msg::CtrlDof>("ctrl_dof", 10);
-        timer_ = this->create_wall_timer(500ms, std::bind(&ControlSchedulingNode::timer_callback, this));
+        timer_ = this->create_wall_timer(5000ms, std::bind(&ControlSchedulingNode::timer_callback, this));
         this->declare_dof_param();
     }
 };
