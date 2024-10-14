@@ -5,6 +5,7 @@
 #include <cstdio>
 #include <custom_interfaces/msg/ctrl_dof.hpp>
 #include <functional>
+#include <geometry_msgs/msg/detail/pose_stamped__struct.hpp>
 #include <geometry_msgs/msg/pose.hpp>
 #include <memory>
 #include <moveit_msgs/msg/constraints.hpp>
@@ -64,8 +65,18 @@ private:
         moveit_visual_tools_->loadRemoteControl();
         move_group_interface_->setStartStateToCurrentState();
         move_group_interface_->clearPathConstraints();
-        move_group_interface_->setPlanningTime(100.0);
+        move_group_interface_->setPlanningTime(10.0);
+        move_group_interface_->setEndEffectorLink("roll_Link");
         // move_group_interface_->setPoseReferenceFrame("engineer_frame");
+
+        geometry_msgs::msg::PoseStamped current_pose = move_group_interface_->getCurrentPose();
+
+        // 输出当前姿态
+        RCLCPP_INFO(this->get_logger(), "Current Pose");
+        RCLCPP_INFO(this->get_logger(), "Position - x: %f, y: %f, z: %f", current_pose.pose.position.x,
+                    current_pose.pose.position.y, current_pose.pose.position.z);
+        RCLCPP_INFO(this->get_logger(), "Orientation - x: %f, y: %f, z: %f, w: %f", current_pose.pose.orientation.x,
+                    current_pose.pose.orientation.y, current_pose.pose.orientation.z, current_pose.pose.orientation.w);
     }
 
     //话题节点通讯
@@ -75,15 +86,15 @@ private:
             initial_flag = true;
         }
         this->ctrl_dof_mm = ctrl_dof;
-        // this->unit_conversion();
+        this->unit_conversion();
         // this->limit_redundant_degrees_of_freedom();
         this->set_pose();
     }
 
     void unit_conversion() {
-        this->ctrl_dof_m.x = this->ctrl_dof_mm.x / 100.F;
-        this->ctrl_dof_m.y = this->ctrl_dof_mm.y / 100.F;
-        this->ctrl_dof_m.z = this->ctrl_dof_mm.z / 100.F;
+        this->ctrl_dof_m.x = this->ctrl_dof_mm.x / 1000.F;
+        this->ctrl_dof_m.y = this->ctrl_dof_mm.y / 1000.F;
+        this->ctrl_dof_m.z = this->ctrl_dof_mm.z / 1000.F;
         this->ctrl_dof_m.roll = this->ctrl_dof_mm.roll / 180.F * std::numbers::pi;
         this->ctrl_dof_m.yaw = this->ctrl_dof_mm.yaw / 180.F * std::numbers::pi;
         this->ctrl_dof_m.pitch = this->ctrl_dof_mm.pitch / 180.F * std::numbers::pi;
@@ -126,23 +137,27 @@ private:
             // msg.orientation.y = q.y();
             // msg.orientation.z = q.z();
 
-            // // msg.position.x = this->ctrl_dof_m.x;
-            // // msg.position.y = this->ctrl_dof_m.y;
-            // // msg.position.z = this->ctrl_dof_m.z;
+            msg.position.x = this->ctrl_dof_m.x;
+            msg.position.y = this->ctrl_dof_m.y;
+            msg.position.z = this->ctrl_dof_m.z;
+            RCLCPP_INFO(this->get_logger(),"target_x:%f",this->ctrl_dof_m.x);
             // msg.position.x = 0.6;
             // msg.position.y = 0.2;
             // msg.position.z = 0.5;
 
-            msg.orientation.w = 1.0;
-            msg.position.x = 0.28;
-            msg.position.y = -0.2;
-            msg.position.z = 0.5;
+            msg.orientation.w = 1e-6;
+            msg.orientation.x = 1e-6;
+            msg.orientation.y = 1e-6;
+            msg.orientation.z = 1.000000;
+
+            // msg.position.x = 0.600000;
+            // msg.position.y = -0.2000000;
+            // msg.position.z = 0.6000000;
             return msg;
         }();
-
-        if (!move_group_interface_->setPoseTarget(target_pose)) {
-            RCLCPP_ERROR(this->get_logger(), "Pose Error");
-        }
+        move_group_interface_->clearPathConstraints();
+        move_group_interface_->setPoseTarget(target_pose);
+        move_group_interface_->clearPathConstraints();
 
         auto const [success, plan] = [this] {
             moveit::planning_interface::MoveGroupInterface::Plan msg;
@@ -153,14 +168,14 @@ private:
         if (success) {
             draw_trajectory_tool_path(plan.trajectory_);
             moveit_visual_tools_->trigger();
-            prompt("Press 'Next' in the RvizVisualToolsGui window to excute");
+            // prompt("Press 'Next' in the RvizVisualToolsGui window to excute");
             draw_title("Executing");
             moveit_visual_tools_->trigger();
             move_group_interface_->execute(plan);
         } else {
             draw_title("Planning Failed!");
             moveit_visual_tools_->trigger();
-            RCLCPP_ERROR(this->get_logger(), "Planning failed");
+            RCLCPP_ERROR(this->get_logger(), "Planning failed:%d", success);
         }
     }
 

@@ -14,18 +14,21 @@ def generate_launch_description():
             executable = "engineer_control",
             name = "engineer_control",
             output = "screen",
+            parameters = [{"use_sim_time": True},],
+
         ),
         Node(
             package = "engineer_control",
             executable = "engineer_frame",
             name = "engineer_frame",
+            parameters = [{"use_sim_time": True},],
+
         ),
         Node(
             package = "engineer_control",
             executable = "control_scheduling",
             name = "control_scheduling",
-            parameters = [initial_dof_yaml],
-            output = "screen",
+            parameters = [initial_dof_yaml,{"use_sim_time": True},],
         ),
         
     ])

@@ -40,18 +40,30 @@ private:
     void key_topic_callback(const custom_interfaces::msg::Key& key) {
         this->key = key;
         this->ctrl_to_dof();
-        RCLCPP_INFO(this->get_logger(), "key_code: %c", this->key.key_code);
+        // RCLCPP_INFO(this->get_logger(), "key_code: %c", this->key.key_code);
     }
 
     //把控制消息改变自由度的控制
     void ctrl_to_dof() {
-        float ctrl_proportion = 0.2F;
+        float ctrl_proportion = 0.5F;
         switch (this->key.key_code) {
             case 'w':
                 this->ctrl_dof.x += ctrl_proportion;
                 break;
             case 's':
                 this->ctrl_dof.x -= ctrl_proportion;
+                break;
+            case 'a':
+                this->ctrl_dof.y += ctrl_proportion;
+                break;
+            case 'd':
+                this->ctrl_dof.y -= ctrl_proportion;
+                break;
+            case 'q':
+                this->ctrl_dof.z += ctrl_proportion;
+                break;
+            case 'e':
+                this->ctrl_dof.z -= ctrl_proportion;
                 break;
         }
     }
@@ -86,7 +98,7 @@ public:
         subscription_ = this->create_subscription<custom_interfaces::msg::Key>(
             "key", 10, std::bind(&ControlSchedulingNode::key_topic_callback, this, _1));
         publisher_ = this->create_publisher<custom_interfaces::msg::CtrlDof>("ctrl_dof", 10);
-        timer_ = this->create_wall_timer(5000ms, std::bind(&ControlSchedulingNode::timer_callback, this));
+        timer_ = this->create_wall_timer(50ms, std::bind(&ControlSchedulingNode::timer_callback, this));
         this->declare_dof_param();
     }
 };
